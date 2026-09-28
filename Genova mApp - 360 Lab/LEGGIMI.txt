@@ -1,0 +1,48 @@
+GENOVA mApp — 360 LAB (v0.1.1)
+
+CONTENUTO
+- index.html                Mini-app
+- css/style.css             Interfaccia
+- js/punti.js               Elenco dei punti e percorsi media
+- js/vr-viewer.js           Viewer WebGL offline 180°/360°
+- js/app.js                 Logica della mini-app
+- video/                    Copia qui i video Ieri
+- panorama/                 Copia qui immagini/video panoramici
+- AVVIA_360_LAB.bat         Avvio locale consigliato su Windows
+- server.ps1                Server locale offline (fallback)
+
+USO RAPIDO
+1. Estrai tutto lo ZIP mantenendo le cartelle.
+2. Fai doppio clic su AVVIA_360_LAB.bat.
+3. Il launcher avvia prima il server e apre il browser solo quando localhost risponde.
+4. Si aprirà http://127.0.0.1:8765 nel browser.
+4. In alternativa puoi aprire index.html direttamente; per i test più affidabili dei media è preferibile localhost.
+
+COME AGGIUNGERE I VIDEO
+- Copia gli MP4 nella cartella video/.
+- Apri js/punti.js e aggiorna l'array 'ieri' del punto.
+- I nomi già presenti sono esempi basati sui punti QR attuali.
+
+COME AGGIUNGERE UN PANORAMA
+Nel punto in js/punti.js imposta per esempio:
+  panorama: "panorama/de_ferrari_1900.jpg",
+  panoramaTipo: "image",
+  proiezione: "equirect",
+  limite: 180
+
+Per un video panoramico:
+  panorama: "panorama/de_ferrari_1900.mp4",
+  panoramaTipo: "video"
+
+MODALITA' SPERIMENTALE
+Se panorama è vuoto, il bottone 360° prova automaticamente il video Ieri corrente con proiezione 'flat180'.
+Serve solo per capire se il materiale è promettente: non trasforma realmente un video normale in un panorama completo.
+
+FILE LOCALE
+Nel popup puoi premere “File locale…” e scegliere un MP4/JPG/PNG dal PC. Il file non viene copiato né caricato online.
+
+SMARTPHONE / GIROSCOPIO
+Mouse/touch/viewer funzionano offline. Per DeviceOrientation sui browser mobili è normalmente richiesto un contesto sicuro HTTPS; per la prova finale usa Netlify (o altro HTTPS).
+
+NOTA
+Questa è una mini-app di laboratorio indipendente da Genova mApp. Non modifica nessun file dell'app principale.
