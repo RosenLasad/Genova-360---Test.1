@@ -1,67 +1,81 @@
 /*
  * Genova mApp — 360 Lab
- * Aggiungi/modifica i punti qui. I percorsi sono relativi a index.html.
- * Se un file non esiste, puoi comunque sceglierlo manualmente dal popup.
+ * I contenuti "Ieri" e VR sono indipendenti.
+ * Per attivare il bottone 360° di un punto, assegna vr.src.
+ * I percorsi sono relativi a index.html.
  */
 window.LAB_POINTS = [
   {
     id: "caricamento-portici",
     nome: "Portici in piazza di Caricamento",
     gruppo: "Piazza Caricamento",
-    descrizione: "I portici di Sottoripa, costruiti tra il 1125 e il 1133, sono tra i più antichi porticati pubblici d’Italia. Questo punto è predisposto come test per verificare l’adattamento di un normale video “Ieri” alla visuale immersiva.",
+    descrizione: "I portici di Sottoripa, costruiti tra il 1125 e il 1133, sono tra i più antichi porticati pubblici d’Italia. Questo punto è predisposto come test per verificare la visuale immersiva sul passato.",
     stato: "Da provare",
     ieri: ["video/caricamento_ieri_1.mp4"],
-    panorama: "",
-    panoramaTipo: "video",
-    proiezione: "flat180",
-    limite: 180
+    vr: {
+      src: "video/caricamento_ieri_1.mp4",
+      type: "video",
+      projection: "flat180",
+      range: 180,
+      fov: 80,
+      yaw: 0,
+      pitch: 0,
+      minYaw: -90,
+      maxYaw: 90,
+      minPitch: -40,
+      maxPitch: 40,
+      loop: true,
+      audio: true
+    }
   },
   {
     id: "piazza-raibetta",
     nome: "Piazza Raibetta",
     gruppo: "Piazza Caricamento",
-    descrizione: "Punto di laboratorio con due video “Ieri”. Puoi passare da un video all’altro e provare ciascun file nel viewer 180° sperimentale.",
-    stato: "Originale",
+    descrizione: "Punto di laboratorio con video storico e sorgente VR configurata separatamente, così il contenuto immersivo potrà essere sostituito senza modificare il video Ieri.",
+    stato: "Da provare",
     ieri: ["video/raibetta_ieri_1.mp4", "video/raibetta_ieri_2.mp4"],
-    panorama: "",
-    panoramaTipo: "video",
-    proiezione: "flat180",
-    limite: 180
+    vr: {
+      src: "video/raibetta_ieri_1.mp4",
+      type: "video",
+      projection: "flat180",
+      range: 180,
+      fov: 80,
+      yaw: 0,
+      pitch: 0,
+      minYaw: -90,
+      maxYaw: 90,
+      minPitch: -40,
+      maxPitch: 40,
+      loop: true,
+      audio: true
+    }
   },
   {
     id: "caricamento-san-giorgio",
     nome: "Piazza Caricamento su S. Giorgio",
     gruppo: "Piazza Caricamento",
-    descrizione: "Un punto con più sorgenti storiche, utile per confrontare fotografie/video diversi e decidere quale sia il più adatto a una ricostruzione panoramica.",
+    descrizione: "Un punto con più sorgenti storiche. Il bottone 360° comparirà quando verrà assegnato un file dedicato in vr.src.",
     stato: "Originale",
     ieri: ["video/caricsangiorgio_ieri_1.mp4", "video/caricsangiorgio_ieri_2.mp4", "video/caricsangiorgio_ieri_3.mp4"],
-    panorama: "",
-    panoramaTipo: "video",
-    proiezione: "flat180",
-    limite: 180
+    vr: null
   },
   {
     id: "piazza-principe",
     nome: "Piazza Principe",
     gruppo: "Piazza Principe",
-    descrizione: "Segnaposto per uno dei prossimi test. Inserisci i file nella cartella video e aggiorna i nomi in js/punti.js.",
+    descrizione: "Segnaposto per uno dei prossimi test. Il contenuto VR potrà essere collocato in una cartella indipendente e indicato in vr.src.",
     stato: "Da preparare",
     ieri: ["video/piazza_principe_ieri_1.mp4"],
-    panorama: "",
-    panoramaTipo: "video",
-    proiezione: "flat180",
-    limite: 180
+    vr: null
   },
   {
     id: "via-xx-settembre",
     nome: "Via XX Settembre",
     gruppo: "Via XX Settembre",
-    descrizione: "Segnaposto per sperimentare una visuale con forte profondità prospettica, particolarmente interessante per l’effetto soggettivo.",
+    descrizione: "Segnaposto per sperimentare una visuale con forte profondità prospettica. Il contenuto immersivo sarà indipendente dal video Ieri.",
     stato: "Da preparare",
     ieri: ["video/via_settembre_ieri_1.mp4"],
-    panorama: "",
-    panoramaTipo: "video",
-    proiezione: "flat180",
-    limite: 180
+    vr: null
   }
 ];

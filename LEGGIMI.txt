@@ -1,10 +1,4 @@
-GENOVA mAPP - 360 LAB v0.1.5
-
-CORREZIONI PRINCIPALI
-- Corretto un problema CSS che poteva lasciare visibile il pannello "Video Ieri non presente" sopra al video anche quando l'MP4 era stato caricato.
-- Corretto lo stesso problema per il messaggio di fallback del viewer 360.
-- Il launcher non cerca piu Python: usa direttamente il server PowerShell incluso.
-- Aggiunto cache-busting per CSS/JS e cache piu prudente su Netlify.
+GENOVA mAPP - 360 LAB v0.1.6
 
 AVVIO OFFLINE SU WINDOWS
 1. Estrai completamente lo ZIP.
@@ -14,7 +8,42 @@ AVVIO OFFLINE SU WINDOWS
 
 NETLIFY
 Carica la cartella che contiene direttamente index.html, netlify.toml, css, js, video e panorama.
-Dopo il nuovo deploy fai un refresh completo del browser (Ctrl+F5) per evitare file vecchi in cache.
+Dopo un nuovo deploy fai un refresh completo del browser (Ctrl+F5) se vedi ancora una versione precedente.
+
+STRUTTURA IERI / VR
+- ieri: elenco dei normali video storici mostrati nel popup.
+- vr.src: file indipendente usato dal viewer immersivo.
+Il file VR puo trovarsi in qualunque cartella del progetto, per esempio:
+  qr_azzurri/caricamento/vr/caricamento_180.mp4
+Purche il percorso indicato in js/punti.js sia corretto.
+
+CONFIGURAZIONE VR PER PUNTO
+Esempio:
+  vr: {
+    src: "video/caricamento_180.mp4",
+    type: "video",
+    projection: "flat180",
+    range: 180,
+    fov: 80,
+    yaw: 0,
+    pitch: 0,
+    minYaw: -90,
+    maxYaw: 90,
+    minPitch: -40,
+    maxPitch: 40,
+    loop: true,
+    audio: true
+  }
+
+NOVITA v0.1.6
+1. Separazione definitiva tra video Ieri e sorgente VR.
+2. Parametri VR salvabili punto per punto in js/punti.js.
+3. Limiti indipendenti sinistra/destra e alto/basso.
+4. Video VR sempre in autoplay e loop, senza play/pausa nel viewer.
+5. Audio del video VR attivo di default con bottone volume/muto.
+   Se il browser blocca l'autoplay con audio, il viewer ripiega automaticamente sul video muto e il bottone permette di riattivarlo.
+6. Loader "Caricamento del video..." durante l'apertura della scena.
+7. Il bottone giroscopio viene mostrato solo quando il browser dichiara il supporto ai sensori di orientamento. Touch e mouse restano sempre disponibili.
 
 VIDEO PRESENTI
 - video/caricamento_ieri_1.mp4
@@ -22,8 +51,3 @@ VIDEO PRESENTI
 
 NOTA
 Piazza Raibetta e configurata anche per raibetta_ieri_2.mp4, che al momento non e presente: il primo video funziona comunque.
-
-
-NOVITA v0.1.5
-- Corretto orientamento verticale delle texture nel viewer WebGL 360: video e immagini non risultano piu capovolti.
-- Nessuna modifica alla riproduzione normale Ieri o al fallback Canvas 2D.

@@ -6,7 +6,7 @@ set "URL=http://127.0.0.1:%PORT%/"
 
 echo.
 echo ==========================================
-echo      Genova mApp - 360 Lab v0.1.5
+echo      Genova mApp - 360 Lab v0.1.6
 echo ==========================================
 echo.
 echo Avvio server locale offline con PowerShell...

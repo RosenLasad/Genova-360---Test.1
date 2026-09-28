@@ -19,7 +19,10 @@
     this.baseYaw=0;
     this.basePitch=0;
     this.fov=80;
-    this.limit=180;
+    this.minYaw=-90;
+    this.maxYaw=90;
+    this.minPitch=-40;
+    this.maxPitch=40;
     this.dragging=false;
     this.lastX=0;
     this.lastY=0;
@@ -84,26 +87,43 @@
   VRViewer.prototype.bindEvents=function(){
     var self=this,c=this.canvas;
     c.addEventListener("pointerdown",function(e){self.dragging=true;self.lastX=e.clientX;self.lastY=e.clientY;c.setPointerCapture&&c.setPointerCapture(e.pointerId);});
-    c.addEventListener("pointermove",function(e){if(!self.dragging)return;var dx=e.clientX-self.lastX,dy=e.clientY-self.lastY;self.lastX=e.clientX;self.lastY=e.clientY;self.yaw-=dx*0.16;self.pitch=clamp(self.pitch+dy*0.14,-85,85);self.applyLimit();self.dirty=true;});
+    c.addEventListener("pointermove",function(e){if(!self.dragging)return;var dx=e.clientX-self.lastX,dy=e.clientY-self.lastY;self.lastX=e.clientX;self.lastY=e.clientY;self.yaw-=dx*0.16;self.pitch+=dy*0.14;self.applyLimits();self.dirty=true;});
     function end(){self.dragging=false;} c.addEventListener("pointerup",end); c.addEventListener("pointercancel",end);
     c.addEventListener("wheel",function(e){e.preventDefault();self.fov=clamp(self.fov+Math.sign(e.deltaY)*4,35,110);self.dirty=true;if(self.onFovChange)self.onFovChange(self.fov);},{passive:false});
     window.addEventListener("resize",function(){self.dirty=true;});
   };
 
-  VRViewer.prototype.applyLimit=function(){ if(this.limit>=360)return; var half=this.limit/2; this.yaw=clamp(this.yaw,this.baseYaw-half,this.baseYaw+half); };
-  VRViewer.prototype.setView=function(opts){opts=opts||{};if(opts.yaw!=null){this.yaw=+opts.yaw;this.baseYaw=+opts.yaw;}if(opts.pitch!=null){this.pitch=clamp(+opts.pitch,-85,85);this.basePitch=this.pitch;}if(opts.fov!=null)this.fov=clamp(+opts.fov,35,110);if(opts.limit!=null)this.limit=+opts.limit;this.applyLimit();this.dirty=true;};
+  VRViewer.prototype.applyLimits=function(){
+    this.yaw=clamp(this.yaw,this.minYaw,this.maxYaw);
+    this.pitch=clamp(this.pitch,this.minPitch,this.maxPitch);
+  };
+  VRViewer.prototype.setView=function(opts){opts=opts||{};if(opts.yaw!=null){this.yaw=+opts.yaw;this.baseYaw=+opts.yaw;}if(opts.pitch!=null){this.pitch=+opts.pitch;this.basePitch=+opts.pitch;}if(opts.fov!=null)this.fov=clamp(+opts.fov,35,110);this.applyLimits();this.dirty=true;};
   VRViewer.prototype.setProjection=function(p){this.projection=p==="flat180"?"flat180":"equirect";this.dirty=true;};
-  VRViewer.prototype.setLimit=function(v){this.limit=+v||180;this.applyLimit();this.dirty=true;};
+  VRViewer.prototype.setLimits=function(opts){opts=opts||{};if(opts.minYaw!=null)this.minYaw=clamp(+opts.minYaw,-180,180);if(opts.maxYaw!=null)this.maxYaw=clamp(+opts.maxYaw,-180,180);if(opts.minPitch!=null)this.minPitch=clamp(+opts.minPitch,-85,85);if(opts.maxPitch!=null)this.maxPitch=clamp(+opts.maxPitch,-85,85);if(this.minYaw>this.maxYaw){var y=this.minYaw;this.minYaw=this.maxYaw;this.maxYaw=y;}if(this.minPitch>this.maxPitch){var p=this.minPitch;this.minPitch=this.maxPitch;this.maxPitch=p;}this.applyLimits();this.dirty=true;};
   VRViewer.prototype.setAutoRotate=function(v){this.autoRotate=!!v;};
 
-  VRViewer.prototype.load=function(src,type){
-    var self=this; this.source=null; this.sourceType=type||"image"; this.dirty=true;
+  VRViewer.prototype.load=function(src,type,opts){
+    var self=this; opts=opts||{};
+    if(this.sourceType==="video"&&this.source){try{this.source.pause();}catch(_){}}
+    this.source=null; this.sourceType=type||"image"; this.dirty=true;
     return new Promise(function(resolve,reject){
       if(self.sourceType==="video"){
-        var v=document.createElement("video"); v.playsInline=true; v.muted=true; v.loop=true; v.preload="auto";
-        v.addEventListener("loadeddata",function(){self.source=v;self.upload();v.play().catch(function(){});resolve(v);},{once:true});
+        var v=document.createElement("video");
+        v.playsInline=true;
+        v.loop=opts.loop!==false;
+        v.preload="auto";
+        v.muted=opts.audio===false;
+        v.volume=opts.volume==null?1:clamp(+opts.volume,0,1);
+        v.addEventListener("loadeddata",function(){self.source=v;self.upload();resolve(v);},{once:true});
         v.addEventListener("error",function(){var code=v.error&&v.error.code;reject(new Error("Impossibile caricare il video nel viewer"+(code?" (errore "+code+")":"")));},{once:true});
-        v.src=src; v.load();
+        v.src=src;
+        v.load();
+        var pp=v.play();
+        if(pp&&typeof pp.catch==="function"){
+          pp.catch(function(){
+            if(!v.muted){v.muted=true;if(self.onMuteChange)self.onMuteChange(true);v.play().catch(function(){});}
+          });
+        }
       }else{
         var img=new Image(); img.onload=function(){self.source=img;self.upload();resolve(img);}; img.onerror=function(){reject(new Error("Impossibile caricare l’immagine panoramica"));}; img.src=src;
       }
@@ -150,7 +170,7 @@
 
   VRViewer.prototype.render=function(){
     var resized=this.resize();
-    if(this.autoRotate&&!this.dragging&&!this.gyro){this.yaw-=0.025;this.applyLimit();this.dirty=true;}
+    if(this.autoRotate&&!this.dragging&&!this.gyro){this.yaw-=0.025;this.applyLimits();this.dirty=true;}
     if(this.backend==="canvas2d"){
       if(this.sourceType==="video" || this.dirty || resized || this.autoRotate) this.render2d();
       this.dirty=false; return;
@@ -162,20 +182,23 @@
 
   VRViewer.prototype.start=function(){var self=this;function frame(){self.render();self.raf=requestAnimationFrame(frame);}cancelAnimationFrame(this.raf);frame();};
   VRViewer.prototype.destroy=function(){cancelAnimationFrame(this.raf);this.disableGyro();if(this.sourceType==="video"&&this.source){try{this.source.pause();}catch(_){}}};
-  VRViewer.prototype.reset=function(){this.yaw=this.baseYaw;this.pitch=this.basePitch;this.fov=80;this.dirty=true;};
-  VRViewer.prototype.toggleMedia=function(){if(this.sourceType!=="video"||!this.source)return;this.source.paused?this.source.play().catch(function(){}):this.source.pause();};
+  VRViewer.prototype.reset=function(){this.yaw=this.baseYaw;this.pitch=this.basePitch;this.fov=80;this.applyLimits();this.dirty=true;};
   VRViewer.prototype.setLoop=function(v){if(this.sourceType==="video"&&this.source)this.source.loop=!!v;};
+  VRViewer.prototype.setMuted=function(v){if(this.sourceType!=="video"||!this.source)return;this.source.muted=!!v;if(this.onMuteChange)this.onMuteChange(this.source.muted);};
+  VRViewer.prototype.toggleMuted=function(){if(this.sourceType!=="video"||!this.source)return null;this.setMuted(!this.source.muted);return this.source.muted;};
+  VRViewer.prototype.isMuted=function(){return !!(this.sourceType==="video"&&this.source&&this.source.muted);};
   VRViewer.prototype.getBackend=function(){return this.backend;};
+  VRViewer.prototype.supportsGyro=function(){return typeof DeviceOrientationEvent!=="undefined";};
 
   VRViewer.prototype.requestGyro=async function(){
-    if(typeof DeviceOrientationEvent==="undefined")throw new Error("Sensore di orientamento non disponibile");
+    if(!this.supportsGyro())throw new Error("Sensore di orientamento non disponibile");
     if(typeof DeviceOrientationEvent.requestPermission==="function"){
       var p=await DeviceOrientationEvent.requestPermission();if(p!=="granted")throw new Error("Permesso non concesso");
     }
     this.gyroZero=null;window.addEventListener("deviceorientation",this._orientationHandler,true);this.gyro=true;this.dirty=true;
   };
   VRViewer.prototype.disableGyro=function(){window.removeEventListener("deviceorientation",this._orientationHandler,true);this.gyro=false;this.gyroZero=null;};
-  VRViewer.prototype.onOrientation=function(e){if(e.alpha==null||e.beta==null)return;if(!this.gyroZero)this.gyroZero={alpha:e.alpha,beta:e.beta};var da=e.alpha-this.gyroZero.alpha;if(da>180)da-=360;if(da<-180)da+=360;this.yaw=this.baseYaw-da;this.pitch=clamp(this.basePitch+(e.beta-this.gyroZero.beta),-80,80);this.applyLimit();this.dirty=true;};
+  VRViewer.prototype.onOrientation=function(e){if(e.alpha==null||e.beta==null)return;if(!this.gyroZero)this.gyroZero={alpha:e.alpha,beta:e.beta};var da=e.alpha-this.gyroZero.alpha;if(da>180)da-=360;if(da<-180)da+=360;this.yaw=this.baseYaw-da;this.pitch=this.basePitch+(e.beta-this.gyroZero.beta);this.applyLimits();this.dirty=true;};
 
   window.VRViewer=VRViewer;
 })();
