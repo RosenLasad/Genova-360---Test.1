@@ -17,7 +17,7 @@ window.LAB_POINTS = [
       src: "video/caricamento_ieri_1.mp4",
       type: "video",
       projection: "flatvr",
-      angle: 120,
+      angle: 180,
       fov: 80,
       yaw: 0,
       pitch: 0,
