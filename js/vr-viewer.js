@@ -113,7 +113,7 @@
   VRViewer.prototype.upload=function(){
     if(this.backend!=="webgl") { this.dirty=true; return; }
     var gl=this.gl,s=this.source;if(!s)return;
-    gl.bindTexture(gl.TEXTURE_2D,this.texture); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,false);
+    gl.bindTexture(gl.TEXTURE_2D,this.texture); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
     gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,s); this.dirty=true;
   };
   VRViewer.prototype.getAspect=function(){var s=this.source;if(!s)return 2;if(this.sourceType==="video")return (s.videoWidth||16)/(s.videoHeight||9);return (s.naturalWidth||s.width||2)/(s.naturalHeight||s.height||1);};

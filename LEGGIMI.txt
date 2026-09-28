@@ -1,4 +1,4 @@
-GENOVA mAPP - 360 LAB v0.1.4
+GENOVA mAPP - 360 LAB v0.1.5
 
 CORREZIONI PRINCIPALI
 - Corretto un problema CSS che poteva lasciare visibile il pannello "Video Ieri non presente" sopra al video anche quando l'MP4 era stato caricato.
@@ -22,3 +22,8 @@ VIDEO PRESENTI
 
 NOTA
 Piazza Raibetta e configurata anche per raibetta_ieri_2.mp4, che al momento non e presente: il primo video funziona comunque.
+
+
+NOVITA v0.1.5
+- Corretto orientamento verticale delle texture nel viewer WebGL 360: video e immagini non risultano piu capovolti.
+- Nessuna modifica alla riproduzione normale Ieri o al fallback Canvas 2D.
