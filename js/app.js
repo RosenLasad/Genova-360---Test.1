@@ -21,8 +21,11 @@
   function loadOriginal(){
     if(!current)return;var path=currentPath();empty.hidden=true;video.hidden=false;video.pause();video.removeAttribute("src");video.load();
     if(!path){showMissing("Nessun video configurato");return;}
-    video.src=path;video.load();$("source-name").textContent=filename(path);$("source-status").textContent="Sorgente configurata";updateCounter();
-    var failed=false;var onErr=function(){if(failed)return;failed=true;showMissing("File non trovato: "+filename(path));};video.addEventListener("error",onErr,{once:true});
+    video.src=path;video.load();$("source-name").textContent=filename(path);$("source-status").textContent="Caricamento…";updateCounter();
+    var failed=false;
+    video.addEventListener("loadedmetadata",function(){$("source-status").textContent="Video pronto • "+(video.videoWidth||"?")+"×"+(video.videoHeight||"?");},{once:true});
+    video.addEventListener("canplay",function(){$("source-status").textContent="Video riproducibile";},{once:true});
+    var onErr=function(){if(failed)return;failed=true;var code=video.error&&video.error.code;showMissing("Errore video"+(code?" (codice "+code+")":"")+": "+filename(path));};video.addEventListener("error",onErr,{once:true});
   }
   function showMissing(msg){video.hidden=true;empty.hidden=false;empty.querySelector("strong").textContent=msg;$("source-name").textContent=filename(currentPath());$("source-status").textContent="Usa “File locale…”";updateCounter();}
   function updateCounter(){var n=(current&&current.ieri&&current.ieri.length)||1;$("media-counter").textContent=(mediaIndex+1)+" / "+n;$("prev-media").disabled=n<=1;$("next-media").disabled=n<=1;}
@@ -31,16 +34,16 @@
   function updateVideoUi(){var d=video.duration||0,c=video.currentTime||0;$("video-progress").value=d?Math.round(c/d*1000):0;$("video-time").textContent=fmt(c)+" / "+fmt(d);$("video-play").textContent=video.paused?"▶":"❚❚";}
 
   async function openVR(){
-    if(!current)return;vrOverlay.hidden=false;modal.hidden=true;document.body.style.overflow="hidden";$("vr-title").textContent=current.nome;fallback.hidden=true;
-    if(!viewer){try{viewer=new window.VRViewer(canvas);viewer.onFovChange=function(v){$("fov-range").value=Math.round(v);$("fov-out").textContent=Math.round(v)+"°";};}catch(e){fallback.hidden=false;fallback.querySelector("span").textContent=e.message;return;}}
+    if(!current)return;video.pause();vrOverlay.hidden=false;modal.hidden=true;document.body.style.overflow="hidden";$("vr-title").textContent=current.nome;fallback.hidden=true;
+    if(!viewer){try{viewer=new window.VRViewer(canvas);viewer.onFovChange=function(v){$("fov-range").value=Math.round(v);$("fov-out").textContent=Math.round(v)+"°";};}catch(e){fallback.hidden=false;fallback.querySelector("strong").textContent="Viewer non disponibile";fallback.querySelector("span").textContent=e.message;return;}}
     var useLocal=!!localObjectUrl,src="",type="image",projection=current.proiezione||"equirect";
     if(useLocal){src=localObjectUrl;type=localType;projection=localType==="video"?"flat180":"equirect";}
     else if(current.panorama){src=current.panorama;type=current.panoramaTipo||(/\.mp4(?:$|\?)/i.test(src)?"video":"image");projection=current.proiezione||"equirect";}
     else{src=currentPath();type="video";projection="flat180";}
-    $("projection-select").value=projection;$("limit-select").value=String(current.limite||180);viewer.setProjection(projection);viewer.setLimit(current.limite||180);viewer.setView({yaw:0,pitch:0,fov:80});syncControls();$("vr-source-info").textContent="Sorgente: "+filename(src)+(projection==="flat180"?" • adattamento sperimentale":" • panorama");
+    $("projection-select").value=projection;$("limit-select").value=String(current.limite||180);viewer.setProjection(projection);viewer.setLimit(current.limite||180);viewer.setView({yaw:0,pitch:0,fov:80});syncControls();$("vr-source-info").textContent="Sorgente: "+filename(src)+(projection==="flat180"?" • adattamento sperimentale":" • panorama")+" • motore: "+viewer.getBackend();
     try{await viewer.load(src,type);viewer.setLoop($("loop-video").checked);}catch(e){
       if(!useLocal && current.panorama && currentPath()){
-        try{src=currentPath();type="video";projection="flat180";$("projection-select").value=projection;viewer.setProjection(projection);$("vr-source-info").textContent="Panorama non disponibile: uso sperimentale di "+filename(src);await viewer.load(src,type);}catch(e2){showVrError(e2.message);}
+        try{src=currentPath();type="video";projection="flat180";$("projection-select").value=projection;viewer.setProjection(projection);$("vr-source-info").textContent="Panorama non disponibile: uso sperimentale di "+filename(src)+" • motore: "+viewer.getBackend();await viewer.load(src,type);}catch(e2){showVrError(e2.message);}
       }else{showVrError(e.message);}
     }
   }

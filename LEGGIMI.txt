@@ -1,3 +1,12 @@
+Genova mApp - 360 Lab v0.1.3
+
+Novita v0.1.3
+- Player Ieri separato dal viewer 360 e con controlli nativi di sicurezza.
+- Stato di caricamento del video piu chiaro.
+- Il primo punto usa davvero video/caricamento_ieri_1.mp4 anche nel test 360.
+- Viewer: WebGL quando disponibile, fallback automatico Canvas 2D se WebGL e disattivato.
+- Nel pannello TEST viene indicato il motore usato.
+
 GENOVA mApp — 360 LAB (v0.1.2)
 
 IMPORTANTE — NETLIFY

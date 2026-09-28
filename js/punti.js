@@ -11,9 +11,9 @@ window.LAB_POINTS = [
     descrizione: "I portici di Sottoripa, costruiti tra il 1125 e il 1133, sono tra i più antichi porticati pubblici d’Italia. Questo punto è predisposto come test per verificare l’adattamento di un normale video “Ieri” alla visuale immersiva.",
     stato: "Da provare",
     ieri: ["video/caricamento_ieri_1.mp4"],
-    panorama: "panorama/demo-genova.svg",
-    panoramaTipo: "image",
-    proiezione: "equirect",
+    panorama: "",
+    panoramaTipo: "video",
+    proiezione: "flat180",
     limite: 180
   },
   {
