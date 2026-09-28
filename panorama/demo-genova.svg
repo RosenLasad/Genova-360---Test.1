@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2048" height="1024" viewBox="0 0 2048 1024">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7db4d2"/><stop offset="1" stop-color="#e8d3aa"/></linearGradient>
+    <linearGradient id="road" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#786f63"/><stop offset="1" stop-color="#302d2a"/></linearGradient>
+  </defs>
+  <rect width="2048" height="1024" fill="url(#sky)"/>
+  <rect y="590" width="2048" height="434" fill="url(#road)"/>
+  <g fill="#bba987" stroke="#705f4d" stroke-width="7">
+    <path d="M0 330h320v350H0z"/><path d="M300 390h290v300H300z"/><path d="M560 430h250v280H560z"/>
+    <path d="M1238 430h250v280h-250z"/><path d="M1458 390h290v300h-290z"/><path d="M1728 330h320v350h-320z"/>
+  </g>
+  <g fill="#30485a"><rect x="70" y="410" width="55" height="88"/><rect x="170" y="410" width="55" height="88"/><rect x="375" y="460" width="48" height="76"/><rect x="470" y="460" width="48" height="76"/><rect x="1530" y="460" width="48" height="76"/><rect x="1625" y="460" width="48" height="76"/><rect x="1820" y="410" width="55" height="88"/><rect x="1920" y="410" width="55" height="88"/></g>
+  <g fill="#d2c3a2" stroke="#7a674d" stroke-width="6"><path d="M810 360h428v355H810z"/><path d="M875 285h298v80H875z"/><path d="M944 210h160v78H944z"/></g>
+  <g fill="#34495e"><rect x="860" y="420" width="70" height="100"/><rect x="989" y="420" width="70" height="100"/><rect x="1118" y="420" width="70" height="100"/></g>
+  <path d="M965 1024L1008 690h32l43 334z" fill="#c3b69a" opacity=".8"/>
+  <path d="M0 805L845 690h358L2048 805" fill="none" stroke="#d5c7a8" stroke-width="12" opacity=".8"/>
+  <g fill="#2d3a32"><circle cx="690" cy="655" r="42"/><circle cx="1360" cy="655" r="42"/></g>
+  <text x="1024" y="115" text-anchor="middle" font-family="Georgia,serif" font-size="62" fill="#26394a">PANORAMA DEMO 360 LAB</text>
+  <text x="1024" y="170" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" fill="#3d5668">Immagine dimostrativa equirettangolare 2:1 — sostituire con una scena storica reale</text>
+  <text x="150" y="760" font-family="Arial,sans-serif" font-size="30" fill="#f8fafc">SINISTRA</text>
+  <text x="944" y="760" font-family="Arial,sans-serif" font-size="30" fill="#f8fafc">FRONTE</text>
+  <text x="1740" y="760" font-family="Arial,sans-serif" font-size="30" fill="#f8fafc">DESTRA</text>
+</svg>

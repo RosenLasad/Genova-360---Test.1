@@ -1,0 +1,56 @@
+GENOVA mApp — 360 LAB (v0.1.2)
+
+IMPORTANTE — NETLIFY
+1. Estrai completamente questo ZIP.
+2. Apri la cartella estratta "Genova mApp - 360 Lab v0.1.2".
+3. Verifica che index.html sia visibile direttamente dentro quella cartella.
+4. Su Netlify Drop trascina LA CARTELLA ESTRATTA (non una cartella superiore e, per evitare ambiguita', non il solo file ZIP).
+5. Dopo il deploy, aprendo l'indirizzo principale del sito deve comparire subito 360 Lab.
+
+Questa versione contiene anche:
+- netlify.toml con publish="."
+- _redirects per riportare qualsiasi rotta a index.html
+- 404.html come ulteriore fallback statico
+
+CONTENUTO
+- index.html                Mini-app / entry point
+- 404.html                  Fallback hosting
+- netlify.toml              Configurazione Netlify
+- _redirects                Fallback delle rotte
+- css/style.css             Interfaccia
+- js/punti.js               Elenco dei punti e percorsi media
+- js/vr-viewer.js           Viewer WebGL offline 180°/360°
+- js/app.js                 Logica della mini-app
+- video/                    Video Ieri
+- panorama/                 Immagini/video panoramici
+- AVVIA_360_LAB.bat         Avvio locale su Windows
+- server.ps1                Server locale offline di riserva
+
+VIDEO ATTUALMENTE CONFIGURATO
+Il primo punto cerca:
+  video/caricamento_ieri_1.mp4
+Nello ZIP attuale questo file e' presente.
+
+AVVIO LOCALE
+Doppio clic su AVVIA_360_LAB.bat.
+Il sito viene servito su:
+  http://127.0.0.1:8765/
+
+AGGIUNGERE VIDEO
+Copia gli MP4 in video/ e modifica l'array ieri nel file js/punti.js.
+I percorsi devono essere relativi a index.html, ad esempio:
+  ieri: ["video/mio_video.mp4"]
+
+PANORAMA
+Esempio immagine:
+  panorama: "panorama/de_ferrari_1900.jpg",
+  panoramaTipo: "image",
+  proiezione: "equirect",
+  limite: 180
+
+Esempio video:
+  panorama: "panorama/de_ferrari_1900.mp4",
+  panoramaTipo: "video"
+
+NOTA
+La mini-app non richiede librerie o CDN esterne.

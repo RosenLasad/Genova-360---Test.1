@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07101f">
+  <title>Genova mApp — 360 Lab v0.1.2</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">LABORATORIO SPERIMENTALE</div>
+        <h1>Genova mApp — 360 Lab</h1>
+        <p class="subtitle">Prova i video “Ieri” e prepara scene storiche immersive 180° / 360°.</p>
+      </div>
+      <div class="offline-pill" title="Nessuna libreria esterna necessaria"><span class="dot"></span> Offline-ready</div>
+    </header>
+
+    <main class="main-grid">
+      <section class="catalog-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>Punti di prova</h2>
+            <p>Apri un punto per vedere il video originale o entrare nel viewer immersivo.</p>
+          </div>
+          <span id="point-count" class="count-badge">0</span>
+        </div>
+        <label class="search-box">
+          <span aria-hidden="true">⌕</span>
+          <input id="search-input" type="search" placeholder="Cerca un punto…" autocomplete="off">
+        </label>
+        <div id="point-list" class="point-list" aria-live="polite"></div>
+      </section>
+
+      <aside class="info-panel">
+        <h2>Come usarlo</h2>
+        <ol>
+          <li>Metti i tuoi MP4 nella cartella <code>video/</code> oppure scegli un file locale dal popup.</li>
+          <li>Apri il punto e controlla il video “Ieri” originale.</li>
+          <li>Premi <strong>360°</strong> per testare il panorama o il video normale adattato.</li>
+          <li>Usa il pannello <strong>TEST</strong> per FOV, limiti e orientamento.</li>
+        </ol>
+        <div class="note-card">
+          <strong>Test smartphone</strong>
+          <p>Per il giroscopio usa HTTPS (per esempio Netlify). Mouse, touch e viewer funzionano anche offline.</p>
+        </div>
+        <div class="note-card compact">
+          <strong>Avvio locale consigliato</strong>
+          <p>Su Windows puoi fare doppio clic su <code>AVVIA_360_LAB.bat</code>.</p>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <div id="point-modal" class="modal-backdrop" hidden>
+    <section class="qr-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <header class="qr-header">
+        <div>
+          <div class="qr-kicker">PUNTO QR — TEST</div>
+          <h2 id="modal-title">Punto</h2>
+        </div>
+        <button id="modal-close" class="icon-btn" type="button" aria-label="Chiudi">×</button>
+      </header>
+
+      <div class="media-stage">
+        <video id="past-video" playsinline preload="metadata"></video>
+        <div id="media-empty" class="media-empty">
+          <div class="media-empty-icon">▶</div>
+          <strong>Video “Ieri” non presente</strong>
+          <span>Copia il file indicato in <code>video/</code> oppure selezionalo dal computer.</span>
+        </div>
+      </div>
+
+      <div class="video-controls">
+        <button id="video-play" class="control-btn" type="button" aria-label="Riproduci o pausa">▶</button>
+        <input id="video-progress" class="progress" type="range" min="0" max="1000" value="0" aria-label="Posizione video">
+        <span id="video-time" class="time">0:00 / 0:00</span>
+      </div>
+
+      <div class="media-tabs" aria-label="Modalità">
+        <button class="tab-btn is-active" type="button" data-tab="original">Ieri</button>
+        <button id="open-vr" class="tab-btn vr-tab" type="button">◉ 360°</button>
+        <button id="pick-file" class="tab-btn secondary" type="button">File locale…</button>
+        <input id="local-file" type="file" accept="video/*,image/*" hidden>
+      </div>
+
+      <div class="qr-content">
+        <p id="modal-description"></p>
+        <div class="media-meta">
+          <span id="source-name"></span>
+          <span id="source-status" class="status-chip"></span>
+        </div>
+      </div>
+
+      <footer class="qr-footer">
+        <button id="prev-media" class="small-btn" type="button">‹ Precedente</button>
+        <span id="media-counter">1 / 1</span>
+        <button id="next-media" class="small-btn" type="button">Successivo ›</button>
+      </footer>
+    </section>
+  </div>
+
+  <div id="vr-overlay" class="vr-overlay" hidden>
+    <section id="vr-shell" class="vr-shell" aria-label="Viewer immersivo">
+      <canvas id="vr-canvas" tabindex="0"></canvas>
+      <div id="vr-fallback" class="vr-fallback" hidden>
+        <strong>WebGL non disponibile.</strong>
+        <span>Prova un browser aggiornato o usa il video originale.</span>
+      </div>
+
+      <header class="vr-topbar">
+        <div>
+          <div class="vr-kicker">GENOVA NEL PASSATO</div>
+          <h2 id="vr-title">Panorama</h2>
+        </div>
+        <div class="vr-top-actions">
+          <button id="gyro-btn" class="vr-btn" type="button">📱 Movimento</button>
+          <button id="vr-fullscreen" class="vr-btn" type="button">⛶</button>
+          <button id="vr-close" class="vr-btn vr-close" type="button">×</button>
+        </div>
+      </header>
+
+      <div class="vr-hint" id="vr-hint">Trascina per guardarti intorno • rotellina per lo zoom</div>
+
+      <button id="test-toggle" class="test-toggle" type="button">⚙ TEST</button>
+      <aside id="test-panel" class="test-panel" hidden>
+        <div class="test-head">
+          <strong>Regolazioni scena</strong>
+          <button id="test-close" type="button" aria-label="Chiudi pannello test">×</button>
+        </div>
+
+        <label>Proiezione
+          <select id="projection-select">
+            <option value="equirect">Panorama equirettangolare</option>
+            <option value="flat180">Video/foto normale → 180° (test)</option>
+          </select>
+        </label>
+
+        <label>Ampiezza visuale <output id="fov-out">80°</output>
+          <input id="fov-range" type="range" min="35" max="110" value="80">
+        </label>
+
+        <label>Rotazione iniziale <output id="yaw-out">0°</output>
+          <input id="yaw-range" type="range" min="-180" max="180" value="0">
+        </label>
+
+        <label>Inclinazione <output id="pitch-out">0°</output>
+          <input id="pitch-range" type="range" min="-75" max="75" value="0">
+        </label>
+
+        <label>Limite orizzontale
+          <select id="limit-select">
+            <option value="180">180°</option>
+            <option value="150">150°</option>
+            <option value="120">120°</option>
+            <option value="240">240°</option>
+            <option value="360">360°</option>
+          </select>
+        </label>
+
+        <label class="switch-row"><input id="auto-rotate" type="checkbox"> Rotazione automatica lenta</label>
+        <label class="switch-row"><input id="loop-video" type="checkbox" checked> Video in loop</label>
+
+        <div class="test-actions">
+          <button id="reset-view" type="button">Reset visuale</button>
+          <button id="play-vr-media" type="button">▶ / ❚❚</button>
+        </div>
+        <p id="vr-source-info" class="source-info"></p>
+      </aside>
+    </section>
+  </div>
+
+  <script src="js/punti.js"></script>
+  <script src="js/vr-viewer.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
