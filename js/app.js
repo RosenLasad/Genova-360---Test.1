@@ -32,25 +32,38 @@
   }
   function showMissing(msg){video.hidden=true;empty.hidden=false;empty.querySelector("strong").textContent=msg;$("source-name").textContent=filename(currentPath());$("source-status").textContent="Usa “File locale…”";updateCounter();}
   function updateCounter(){var n=(current&&current.ieri&&current.ieri.length)||1;$("media-counter").textContent=(mediaIndex+1)+" / "+n;$("prev-media").disabled=n<=1;$("next-media").disabled=n<=1;}
-  function selectLocal(file){clearLocal();localObjectUrl=URL.createObjectURL(file);localType=file.type.indexOf("video/")===0?"video":"image";$("source-name").textContent=file.name;$("source-status").textContent="File locale";if(localType==="video"){empty.hidden=true;video.hidden=false;video.src=localObjectUrl;video.load();video.play().catch(function(){});}else{video.pause();video.hidden=true;empty.hidden=false;empty.querySelector("strong").textContent="Immagine locale selezionata";empty.querySelector("span").textContent="Premi 360° per aprirla nel viewer.";}updateVrButton();}
+  function selectLocal(file){clearLocal();localObjectUrl=URL.createObjectURL(file);localType=file.type.indexOf("video/")===0?"video":"image";$("source-name").textContent=file.name;$("source-status").textContent="File locale";if(localType==="video"){empty.hidden=true;video.hidden=false;video.src=localObjectUrl;video.load();video.play().catch(function(){});}else{video.pause();video.hidden=true;empty.hidden=false;empty.querySelector("strong").textContent="Immagine locale selezionata";empty.querySelector("span").textContent="Premi VR per aprirla nel viewer.";}updateVrButton();}
   function fmt(t){if(!isFinite(t))return"0:00";var m=Math.floor(t/60),s=Math.floor(t%60);return m+":"+String(s).padStart(2,"0");}
   function updateVideoUi(){var d=video.duration||0,c=video.currentTime||0;$("video-progress").value=d?Math.round(c/d*1000):0;$("video-time").textContent=fmt(c)+" / "+fmt(d);$("video-play").textContent=video.paused?"▶":"❚❚";}
   function setLoader(on){loader.hidden=!on;}
   function setAudioUi(muted,isVideo){var b=$("vr-audio");b.hidden=!isVideo;if(!isVideo)return;b.textContent=muted?"🔇":"🔊";b.setAttribute("aria-label",muted?"Attiva audio":"Silenzia audio");b.title=muted?"Attiva audio":"Silenzia audio";}
 
+  function normalizeAngle(v){
+    v=+v;if(!isFinite(v))v=120;return Math.max(60,Math.min(360,v));
+  }
+  function ensureAngleOption(angle){
+    var sel=$("angle-select"),value=String(Math.round(angle));
+    var found=Array.prototype.some.call(sel.options,function(o){return o.value===value;});
+    if(!found){var o=document.createElement("option");o.value=value;o.textContent="VR "+value+"°";sel.appendChild(o);}
+    sel.value=value;
+  }
   function applySceneConfig(vr){
     vr=vr||{};
-    var range=+vr.range||180;
+    var angle=normalizeAngle(vr.angle!=null?vr.angle:(vr.range!=null?vr.range:120));
     var yaw=vr.yaw==null?0:+vr.yaw;
     var pitch=vr.pitch==null?0:+vr.pitch;
-    var minYaw=vr.minYaw==null?yaw-range/2:+vr.minYaw;
-    var maxYaw=vr.maxYaw==null?yaw+range/2:+vr.maxYaw;
+    var minYaw=vr.minYaw==null?yaw-angle/2:+vr.minYaw;
+    var maxYaw=vr.maxYaw==null?yaw+angle/2:+vr.maxYaw;
     var minPitch=vr.minPitch==null?-40:+vr.minPitch;
     var maxPitch=vr.maxPitch==null?40:+vr.maxPitch;
-    viewer.setProjection(vr.projection||"flat180");
+    var projection=vr.projection||"flatvr";
+    if(projection==="flat180")projection="flatvr"; // compatibilità con configurazioni precedenti
+    viewer.setContentAngle(angle);
+    viewer.setProjection(projection);
     viewer.setLimits({minYaw:minYaw,maxYaw:maxYaw,minPitch:minPitch,maxPitch:maxPitch});
     viewer.setView({yaw:yaw,pitch:pitch,fov:vr.fov==null?80:+vr.fov});
-    $("projection-select").value=vr.projection||"flat180";
+    $("projection-select").value=projection;
+    ensureAngleOption(angle);
     syncControls();
   }
 
@@ -68,12 +81,13 @@
     var useLocal=!!localObjectUrl;
     var src=useLocal?localObjectUrl:vr.src;
     var type=useLocal?localType:(vr.type||(/\.mp4(?:$|\?)/i.test(src)?"video":"image"));
-    var localVr=useLocal?{projection:type==="video"?"flat180":"equirect",range:180,fov:80,yaw:0,pitch:0,minYaw:-90,maxYaw:90,minPitch:-40,maxPitch:40,loop:true,audio:true}:vr;
+    var localVr=useLocal?{projection:type==="video"?"flatvr":"equirect",angle:120,fov:80,yaw:0,pitch:0,minPitch:-40,maxPitch:40,loop:true,audio:true}:vr;
     applySceneConfig(localVr);
     viewer.setAutoRotate(false);$("auto-rotate").checked=false;
     $("gyro-btn").hidden=!viewer.supportsGyro();
     setAudioUi(false,type==="video");
-    $("vr-source-info").textContent="Sorgente VR: "+filename(src)+" • "+(localVr.projection==="flat180"?"180°":"panorama")+" • motore: "+viewer.getBackend();
+    var sceneAngle=normalizeAngle(localVr.angle!=null?localVr.angle:(localVr.range!=null?localVr.range:120));
+    $("vr-source-info").textContent="Sorgente VR: "+filename(src)+" • VR "+Math.round(sceneAngle)+"° • motore: "+viewer.getBackend();
     try{
       await viewer.load(src,type,{loop:true,audio:localVr.audio!==false});
       viewer.setLoop(true);
@@ -105,6 +119,14 @@
   $("open-vr").addEventListener("click",openVR);$("vr-close").addEventListener("click",closeVR);
   $("test-toggle").addEventListener("click",function(){$("test-panel").hidden=!$("test-panel").hidden;});$("test-close").addEventListener("click",function(){$("test-panel").hidden=true;});
   $("projection-select").addEventListener("change",function(){viewer&&viewer.setProjection(this.value);});
+  $("angle-select").addEventListener("change",function(){
+    if(!viewer)return;
+    var angle=normalizeAngle(this.value),center=viewer.baseYaw;
+    viewer.setContentAngle(angle);
+    viewer.setLimits({minYaw:center-angle/2,maxYaw:center+angle/2,minPitch:viewer.minPitch,maxPitch:viewer.maxPitch});
+    syncControls();
+    $("vr-source-info").textContent=$("vr-source-info").textContent.replace(/VR \d+°/,"VR "+Math.round(angle)+"°");
+  });
   $("fov-range").addEventListener("input",function(){if(!viewer)return;viewer.fov=+this.value;viewer.dirty=true;$("fov-out").textContent=this.value+"°";});
   $("yaw-range").addEventListener("input",function(){if(!viewer)return;viewer.baseYaw=viewer.yaw=+this.value;viewer.applyLimits();viewer.dirty=true;$("yaw-out").textContent=this.value+"°";});
   $("pitch-range").addEventListener("input",function(){if(!viewer)return;viewer.basePitch=viewer.pitch=+this.value;viewer.applyLimits();viewer.dirty=true;$("pitch-out").textContent=this.value+"°";});

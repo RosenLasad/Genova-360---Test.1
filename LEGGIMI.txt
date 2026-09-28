@@ -1,4 +1,4 @@
-GENOVA mAPP - 360 LAB v0.1.6
+GENOVA mAPP - 360 LAB v0.1.7
 
 AVVIO OFFLINE SU WINDOWS
 1. Estrai completamente lo ZIP.
@@ -14,36 +14,49 @@ STRUTTURA IERI / VR
 - ieri: elenco dei normali video storici mostrati nel popup.
 - vr.src: file indipendente usato dal viewer immersivo.
 Il file VR puo trovarsi in qualunque cartella del progetto, per esempio:
-  qr_azzurri/caricamento/vr/caricamento_180.mp4
+  qr_azzurri/caricamento/vr/caricamento_vr.mp4
 Purche il percorso indicato in js/punti.js sia corretto.
+
+FORMATO VR
+Il bottone si chiama semplicemente VR. Ogni file finale puo rappresentare una scena di ampiezza diversa:
+- angle: 120 -> un settore VR da circa 120 gradi;
+- angle: 240 -> video finale ottenuto, per esempio, unendo due settori da circa 120 gradi;
+- angle: 360 -> video finale ottenuto, per esempio, unendo tre settori da circa 120 gradi.
+Sono ammessi anche valori personalizzati tra 60 e 360 gradi.
+Il Lab riceve sempre un solo file VR finale: l'eventuale unione/stitch di piu scene avviene prima, in fase di produzione.
 
 CONFIGURAZIONE VR PER PUNTO
 Esempio:
   vr: {
-    src: "video/caricamento_180.mp4",
+    src: "video/caricamento_vr.mp4",
     type: "video",
-    projection: "flat180",
-    range: 180,
+    projection: "flatvr",
+    angle: 120,
     fov: 80,
     yaw: 0,
     pitch: 0,
-    minYaw: -90,
-    maxYaw: 90,
     minPitch: -40,
     maxPitch: 40,
     loop: true,
     audio: true
   }
 
-NOVITA v0.1.6
-1. Separazione definitiva tra video Ieri e sorgente VR.
-2. Parametri VR salvabili punto per punto in js/punti.js.
-3. Limiti indipendenti sinistra/destra e alto/basso.
-4. Video VR sempre in autoplay e loop, senza play/pausa nel viewer.
-5. Audio del video VR attivo di default con bottone volume/muto.
-   Se il browser blocca l'autoplay con audio, il viewer ripiega automaticamente sul video muto e il bottone permette di riattivarlo.
-6. Loader "Caricamento del video..." durante l'apertura della scena.
-7. Il bottone giroscopio viene mostrato solo quando il browser dichiara il supporto ai sensori di orientamento. Touch e mouse restano sempre disponibili.
+LIMITI ORIZZONTALI
+Se minYaw e maxYaw non sono specificati, vengono calcolati automaticamente attorno a yaw:
+- 120 gradi -> yaw +/- 60;
+- 240 gradi -> yaw +/- 120;
+- 360 gradi -> yaw +/- 180.
+Si possono comunque impostare minYaw/maxYaw manualmente per una scena particolare.
+I limiti verticali minPitch/maxPitch restano configurabili separatamente.
+
+NOVITA v0.1.7
+1. Bottone "360°" rinominato "VR".
+2. Nuovo parametro angle al posto del vecchio range.
+3. Il viewer usa davvero angle anche per la mappatura/proiezione del contenuto VR.
+4. Limiti orizzontali automatici in base ad angle, salvo override manuale.
+5. Il pannello TEST permette di scegliere VR 120°, VR 240° o VR 360°.
+6. Testi dell'interfaccia aggiornati alla nuova terminologia VR.
+7. Compatibilita mantenuta con vecchie configurazioni range / flat180 durante la transizione.
 
 VIDEO PRESENTI
 - video/caricamento_ieri_1.mp4

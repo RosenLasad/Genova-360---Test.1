@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#07101f">
-  <title>Genova mApp — 360 Lab v0.1.6</title>
-  <link rel="stylesheet" href="css/style.css?v=0.1.6">
+  <title>Genova mApp — 360 Lab v0.1.7</title>
+  <link rel="stylesheet" href="css/style.css?v=0.1.7">
 </head>
 <body>
   <div class="app-shell">
@@ -13,7 +13,7 @@
       <div>
         <div class="eyebrow">LABORATORIO SPERIMENTALE</div>
         <h1>Genova mApp — 360 Lab</h1>
-        <p class="subtitle">Prova i video “Ieri” e prepara scene storiche immersive 180° / 360°.</p>
+        <p class="subtitle">Prova i video “Ieri” e prepara scene storiche immersive VR da 120° / 240° / 360°.</p>
       </div>
       <div class="offline-pill" title="Nessuna libreria esterna necessaria"><span class="dot"></span> Offline-ready</div>
     </header>
@@ -39,7 +39,7 @@
         <ol>
           <li>Metti i tuoi MP4 nella cartella <code>video/</code> oppure scegli un file locale dal popup.</li>
           <li>Apri il punto e controlla il video “Ieri” originale.</li>
-          <li>Premi <strong>360°</strong> per testare il panorama o il video normale adattato.</li>
+          <li>Premi <strong>VR</strong> per entrare nella scena immersiva configurata a 120°, 240° o 360°.</li>
           <li>Usa il pannello <strong>TEST</strong> per FOV, limiti e orientamento.</li>
         </ol>
         <div class="note-card">
@@ -81,7 +81,7 @@
 
       <div class="media-tabs" aria-label="Modalità">
         <button class="tab-btn is-active" type="button" data-tab="original">Ieri</button>
-        <button id="open-vr" class="tab-btn vr-tab" type="button">◉ 360°</button>
+        <button id="open-vr" class="tab-btn vr-tab" type="button">◉ VR</button>
         <button id="pick-file" class="tab-btn secondary" type="button">File locale…</button>
         <input id="local-file" type="file" accept="video/*,image/*" hidden>
       </div>
@@ -136,10 +136,18 @@
           <button id="test-close" type="button" aria-label="Chiudi pannello test">×</button>
         </div>
 
+        <label>Tipo scena VR
+          <select id="angle-select">
+            <option value="120">VR 120°</option>
+            <option value="240">VR 240°</option>
+            <option value="360">VR 360°</option>
+          </select>
+        </label>
+
         <label>Proiezione
           <select id="projection-select">
+            <option value="flatvr">Video/foto VR adattato</option>
             <option value="equirect">Panorama equirettangolare</option>
-            <option value="flat180">Video/foto normale → 180° (test)</option>
           </select>
         </label>
 
@@ -178,8 +186,8 @@
     </section>
   </div>
 
-  <script src="js/punti.js?v=0.1.6"></script>
-  <script src="js/vr-viewer.js?v=0.1.6"></script>
-  <script src="js/app.js?v=0.1.6"></script>
+  <script src="js/punti.js?v=0.1.7"></script>
+  <script src="js/vr-viewer.js?v=0.1.7"></script>
+  <script src="js/app.js?v=0.1.7"></script>
 </body>
 </html>

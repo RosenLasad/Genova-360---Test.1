@@ -1,7 +1,8 @@
 /*
  * Genova mApp — 360 Lab
  * I contenuti "Ieri" e VR sono indipendenti.
- * Per attivare il bottone 360° di un punto, assegna vr.src.
+ * Per attivare il bottone VR di un punto, assegna vr.src.
+ * angle indica l’ampiezza orizzontale reale della scena: 120, 240, 360 o un valore personalizzato.
  * I percorsi sono relativi a index.html.
  */
 window.LAB_POINTS = [
@@ -15,14 +16,12 @@ window.LAB_POINTS = [
     vr: {
       src: "video/caricamento_ieri_1.mp4",
       type: "video",
-      projection: "flat180",
-      range: 180,
+      projection: "flatvr",
+      angle: 120,
       fov: 80,
       yaw: 0,
       pitch: 0,
-      minYaw: -90,
-      maxYaw: 90,
-      minPitch: -40,
+            minPitch: -40,
       maxPitch: 40,
       loop: true,
       audio: true
@@ -38,14 +37,12 @@ window.LAB_POINTS = [
     vr: {
       src: "video/raibetta_ieri_1.mp4",
       type: "video",
-      projection: "flat180",
-      range: 180,
+      projection: "flatvr",
+      angle: 120,
       fov: 80,
       yaw: 0,
       pitch: 0,
-      minYaw: -90,
-      maxYaw: 90,
-      minPitch: -40,
+            minPitch: -40,
       maxPitch: 40,
       loop: true,
       audio: true
@@ -55,7 +52,7 @@ window.LAB_POINTS = [
     id: "caricamento-san-giorgio",
     nome: "Piazza Caricamento su S. Giorgio",
     gruppo: "Piazza Caricamento",
-    descrizione: "Un punto con più sorgenti storiche. Il bottone 360° comparirà quando verrà assegnato un file dedicato in vr.src.",
+    descrizione: "Un punto con più sorgenti storiche. Il bottone VR comparirà quando verrà assegnato un file dedicato in vr.src.",
     stato: "Originale",
     ieri: ["video/caricsangiorgio_ieri_1.mp4", "video/caricsangiorgio_ieri_2.mp4", "video/caricsangiorgio_ieri_3.mp4"],
     vr: null
