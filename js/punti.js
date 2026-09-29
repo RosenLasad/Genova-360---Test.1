@@ -2,7 +2,8 @@
  * Genova mApp — 360 Lab
  * I contenuti "Ieri" e VR sono indipendenti.
  * Tutti i 5 punti del Lab sono predisposti per la modalità VR.
- * angle indica l'ampiezza orizzontale reale della scena: 120, 180, 240, 360 o un valore personalizzato.
+ * angle indica l'ampiezza orizzontale reale della scena.
+ * verticalAngle indica l'ampiezza verticale reale della scena.
  * I percorsi sono relativi a index.html.
  */
 window.LAB_POINTS = [
@@ -18,6 +19,7 @@ window.LAB_POINTS = [
       type: "video",
       projection: "flatvr",
       angle: 180,
+      verticalAngle: 120,
       fov: 80,
       yaw: 0,
       pitch: 0,
@@ -39,6 +41,7 @@ window.LAB_POINTS = [
       type: "video",
       projection: "flatvr",
       angle: 180,
+      verticalAngle: 120,
       fov: 80,
       yaw: 0,
       pitch: 0,
@@ -60,6 +63,7 @@ window.LAB_POINTS = [
       type: "video",
       projection: "flatvr",
       angle: 180,
+      verticalAngle: 120,
       fov: 80,
       yaw: 0,
       pitch: 0,
@@ -81,6 +85,7 @@ window.LAB_POINTS = [
       type: "video",
       projection: "flatvr",
       angle: 180,
+      verticalAngle: 120,
       fov: 80,
       yaw: 0,
       pitch: 0,
@@ -102,6 +107,7 @@ window.LAB_POINTS = [
       type: "video",
       projection: "flatvr",
       angle: 180,
+      verticalAngle: 60,
       fov: 80,
       yaw: 0,
       pitch: 0,

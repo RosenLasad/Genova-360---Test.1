@@ -64,3 +64,10 @@ VIDEO PRESENTI
 
 NOTA
 Piazza Raibetta e configurata anche per raibetta_ieri_2.mp4, che al momento non e presente: il primo video funziona comunque.
+
+
+NOVITA v0.1.9
+- Aggiunto verticalAngle per controllare separatamente l ampiezza verticale della scena VR.
+- Il pannello TEST permette di regolare ampiezza orizzontale, verticale e vedere il rapporto angolare.
+- Via XX Settembre parte da 180 x 60 gradi, adatto a un video circa 3:1.
+- Il bottone TEST e stato spostato piu in alto per non essere coperto dal badge Netlify.

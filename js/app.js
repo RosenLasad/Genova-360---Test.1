@@ -59,6 +59,8 @@
     var projection=vr.projection||"flatvr";
     if(projection==="flat180")projection="flatvr"; // compatibilità con configurazioni precedenti
     viewer.setContentAngle(angle);
+    var verticalAngle=vr.verticalAngle==null?Math.max(10,Math.min(180,angle/1.5)):+vr.verticalAngle;
+    viewer.setVerticalAngle(verticalAngle);
     viewer.setProjection(projection);
     viewer.setLimits({minYaw:minYaw,maxYaw:maxYaw,minPitch:minPitch,maxPitch:maxPitch});
     viewer.setView({yaw:yaw,pitch:pitch,fov:vr.fov==null?80:+vr.fov});
@@ -81,13 +83,13 @@
     var useLocal=!!localObjectUrl;
     var src=useLocal?localObjectUrl:vr.src;
     var type=useLocal?localType:(vr.type||(/\.mp4(?:$|\?)/i.test(src)?"video":"image"));
-    var localVr=useLocal?{projection:type==="video"?"flatvr":"equirect",angle:120,fov:80,yaw:0,pitch:0,minPitch:-40,maxPitch:40,loop:true,audio:true}:vr;
+    var localVr=useLocal?{projection:type==="video"?"flatvr":"equirect",angle:120,verticalAngle:80,fov:80,yaw:0,pitch:0,minPitch:-40,maxPitch:40,loop:true,audio:true}:vr;
     applySceneConfig(localVr);
     viewer.setAutoRotate(false);$("auto-rotate").checked=false;
     $("gyro-btn").hidden=!viewer.supportsGyro();
     setAudioUi(false,type==="video");
     var sceneAngle=normalizeAngle(localVr.angle!=null?localVr.angle:(localVr.range!=null?localVr.range:120));
-    $("vr-source-info").textContent="Sorgente VR: "+filename(src)+" • VR "+Math.round(sceneAngle)+"° • motore: "+viewer.getBackend();
+    $("vr-source-info").textContent="Sorgente VR: "+filename(src)+" • "+Math.round(sceneAngle)+"° × "+Math.round(viewer.verticalAngle)+"° • motore: "+viewer.getBackend();
     try{
       await viewer.load(src,type,{loop:true,audio:localVr.audio!==false});
       viewer.setLoop(true);
@@ -100,6 +102,8 @@
   function syncControls(){
     if(!viewer)return;
     $("fov-range").value=Math.round(viewer.fov);$("fov-out").textContent=Math.round(viewer.fov)+"°";
+    $("vertical-angle-range").value=Math.round(viewer.verticalAngle);$("vertical-angle-out").textContent=Math.round(viewer.verticalAngle)+"°";
+    $("ratio-out").textContent=(viewer.contentAngle/viewer.verticalAngle).toFixed(2)+":1";
     $("yaw-range").value=Math.round(viewer.baseYaw);$("yaw-out").textContent=Math.round(viewer.baseYaw)+"°";
     $("pitch-range").value=Math.round(viewer.basePitch);$("pitch-out").textContent=Math.round(viewer.basePitch)+"°";
     $("min-yaw-range").value=Math.round(viewer.minYaw);$("min-yaw-out").textContent=Math.round(viewer.minYaw)+"°";
@@ -125,7 +129,15 @@
     viewer.setContentAngle(angle);
     viewer.setLimits({minYaw:center-angle/2,maxYaw:center+angle/2,minPitch:viewer.minPitch,maxPitch:viewer.maxPitch});
     syncControls();
-    $("vr-source-info").textContent=$("vr-source-info").textContent.replace(/VR \d+°/,"VR "+Math.round(angle)+"°");
+    $("vr-source-info").textContent=$("vr-source-info").textContent.replace(/\d+° × \d+°/,Math.round(angle)+"° × "+Math.round(viewer.verticalAngle)+"°");
+    $("ratio-out").textContent=(viewer.contentAngle/viewer.verticalAngle).toFixed(2)+":1";
+  });
+  $("vertical-angle-range").addEventListener("input",function(){
+    if(!viewer)return;
+    viewer.setVerticalAngle(+this.value);
+    $("vertical-angle-out").textContent=Math.round(viewer.verticalAngle)+"°";
+    $("ratio-out").textContent=(viewer.contentAngle/viewer.verticalAngle).toFixed(2)+":1";
+    $("vr-source-info").textContent=$("vr-source-info").textContent.replace(/\d+° × \d+°/,Math.round(viewer.contentAngle)+"° × "+Math.round(viewer.verticalAngle)+"°");
   });
   $("fov-range").addEventListener("input",function(){if(!viewer)return;viewer.fov=+this.value;viewer.dirty=true;$("fov-out").textContent=this.value+"°";});
   $("yaw-range").addEventListener("input",function(){if(!viewer)return;viewer.baseYaw=viewer.yaw=+this.value;viewer.applyLimits();viewer.dirty=true;$("yaw-out").textContent=this.value+"°";});

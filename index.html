@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#07101f">
   <title>Genova mApp — 360 Lab v0.1.7</title>
-  <link rel="stylesheet" href="css/style.css?v=0.1.7">
+  <link rel="stylesheet" href="css/style.css?v=0.1.9">
 </head>
 <body>
   <div class="app-shell">
@@ -139,10 +139,17 @@
         <label>Tipo scena VR
           <select id="angle-select">
             <option value="120">VR 120°</option>
+            <option value="180">VR 180°</option>
             <option value="240">VR 240°</option>
             <option value="360">VR 360°</option>
           </select>
         </label>
+
+        <label>Ampiezza verticale <output id="vertical-angle-out">80°</output>
+          <input id="vertical-angle-range" type="range" min="10" max="180" value="80">
+        </label>
+
+        <div class="ratio-readout">Rapporto angolare <strong id="ratio-out">1.50:1</strong></div>
 
         <label>Proiezione
           <select id="projection-select">
@@ -186,8 +193,8 @@
     </section>
   </div>
 
-  <script src="js/punti.js?v=0.1.7"></script>
-  <script src="js/vr-viewer.js?v=0.1.7"></script>
-  <script src="js/app.js?v=0.1.7"></script>
+  <script src="js/punti.js?v=0.1.9"></script>
+  <script src="js/vr-viewer.js?v=0.1.9"></script>
+  <script src="js/app.js?v=0.1.9"></script>
 </body>
 </html>
