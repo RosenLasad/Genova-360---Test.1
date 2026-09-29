@@ -101,7 +101,7 @@ window.LAB_POINTS = [
       src: "video/via_settembre_ieri_1.mp4",
       type: "video",
       projection: "flatvr",
-      angle: 270,
+      angle: 340,
       fov: 80,
       yaw: 0,
       pitch: 0,
