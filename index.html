@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#07101f">
   <title>Genova mApp — 360 Lab v0.1.7</title>
-  <link rel="stylesheet" href="css/style.css?v=0.1.9">
+  <link rel="stylesheet" href="css/style.css?v=0.1.10">
 </head>
 <body>
   <div class="app-shell">
@@ -136,7 +136,7 @@
           <button id="test-close" type="button" aria-label="Chiudi pannello test">×</button>
         </div>
 
-        <label>Tipo scena VR
+        <label>Ampiezza orizzontale (angle)
           <select id="angle-select">
             <option value="120">VR 120°</option>
             <option value="180">VR 180°</option>
@@ -145,41 +145,41 @@
           </select>
         </label>
 
-        <label>Ampiezza verticale <output id="vertical-angle-out">80°</output>
+        <label>Ampiezza verticale (verticalAngle) <output id="vertical-angle-out">80°</output>
           <input id="vertical-angle-range" type="range" min="10" max="180" value="80">
         </label>
 
         <div class="ratio-readout">Rapporto angolare <strong id="ratio-out">1.50:1</strong></div>
 
-        <label>Proiezione
+        <label>Proiezione (projection)
           <select id="projection-select">
             <option value="flatvr">Video/foto VR adattato</option>
             <option value="equirect">Panorama equirettangolare</option>
           </select>
         </label>
 
-        <label>Ampiezza visuale <output id="fov-out">80°</output>
+        <label>Ampiezza visuale / zoom (fov) <output id="fov-out">80°</output>
           <input id="fov-range" type="range" min="35" max="110" value="80">
         </label>
 
-        <label>Rotazione iniziale <output id="yaw-out">0°</output>
+        <label>Orientamento orizzontale iniziale (yaw) <output id="yaw-out">0°</output>
           <input id="yaw-range" type="range" min="-180" max="180" value="0">
         </label>
 
-        <label>Inclinazione <output id="pitch-out">0°</output>
+        <label>Orientamento verticale iniziale (pitch) <output id="pitch-out">0°</output>
           <input id="pitch-range" type="range" min="-75" max="75" value="0">
         </label>
 
-        <label>Limite sinistro <output id="min-yaw-out">-90°</output>
+        <label>Limite sinistro (minYaw) <output id="min-yaw-out">-90°</output>
           <input id="min-yaw-range" type="range" min="-180" max="0" value="-90">
         </label>
-        <label>Limite destro <output id="max-yaw-out">90°</output>
+        <label>Limite destro (maxYaw) <output id="max-yaw-out">90°</output>
           <input id="max-yaw-range" type="range" min="0" max="180" value="90">
         </label>
-        <label>Limite verso il basso <output id="min-pitch-out">-40°</output>
+        <label>Limite verso il basso (minPitch) <output id="min-pitch-out">-40°</output>
           <input id="min-pitch-range" type="range" min="-85" max="0" value="-40">
         </label>
-        <label>Limite verso l’alto <output id="max-pitch-out">40°</output>
+        <label>Limite verso l’alto (maxPitch) <output id="max-pitch-out">40°</output>
           <input id="max-pitch-range" type="range" min="0" max="85" value="40">
         </label>
 
@@ -193,8 +193,8 @@
     </section>
   </div>
 
-  <script src="js/punti.js?v=0.1.9"></script>
-  <script src="js/vr-viewer.js?v=0.1.9"></script>
-  <script src="js/app.js?v=0.1.9"></script>
+  <script src="js/punti.js?v=0.1.10"></script>
+  <script src="js/vr-viewer.js?v=0.1.10"></script>
+  <script src="js/app.js?v=0.1.10"></script>
 </body>
 </html>
