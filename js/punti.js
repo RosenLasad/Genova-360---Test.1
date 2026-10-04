@@ -95,6 +95,133 @@ window.LAB_POINTS = [
       audio: true
     }
   },
+    {
+    id: "piazza-deferrari",
+    nome: "Piazza de Ferrari 1920",
+    gruppo: "Piazza de Ferrari",
+    descrizione: "Punto predisposto per la modalità VR. Il percorso VR è indipendente e potrà essere sostituito con il video panoramico dedicato di Piazza Principe.",
+    stato: "VR predisposto",
+    ieri: ["video/piazza_deferrari_1.mp4"],
+    vr: {
+      src: "video/piazza_deferrari_1.mp4",
+      type: "video",
+      projection: "flatvr",
+      angle: 180,
+      verticalAngle: 120,
+      fov: 80,
+      yaw: 0,
+      pitch: 0,
+      minPitch: -40,
+      maxPitch: 40,
+      loop: true,
+      audio: true
+    }
+  },  {
+    id: "piazza-principe-2",
+    nome: "Piazza de Ferrari 1890",
+    gruppo: "Piazza de Ferrari",
+    descrizione: "Punto predisposto per la modalità VR. Il percorso VR è indipendente e potrà essere sostituito con il video panoramico dedicato di Piazza Principe.",
+    stato: "VR predisposto",
+    ieri: ["video/piazza_deferrari_2.mp4"],
+    vr: {
+      src: "video/piazza_deferrari_2.mp4",
+      type: "video",
+      projection: "flatvr",
+      angle: 180,
+      verticalAngle: 120,
+      fov: 80,
+      yaw: 0,
+      pitch: 0,
+      minPitch: -40,
+      maxPitch: 40,
+      loop: true,
+      audio: true
+    }
+  },  {
+    id: "piazza-deferrari-3",
+    nome: "Piazza San Domenico",
+    gruppo: "Piazza de Ferrari",
+    descrizione: "Punto predisposto per la modalità VR. Il percorso VR è indipendente e potrà essere sostituito con il video panoramico dedicato di Piazza Principe.",
+    stato: "VR predisposto",
+    ieri: ["video/piazza_deferrari_3.mp4"],
+    vr: {
+      src: "video/piazza_deferrari_3.mp4",
+      type: "video",
+      projection: "flatvr",
+      angle: 180,
+      verticalAngle: 120,
+      fov: 80,
+      yaw: 0,
+      pitch: 0,
+      minPitch: -40,
+      maxPitch: 40,
+      loop: true,
+      audio: true
+    }
+  },  {
+    id: "piazza-dante-1",
+    nome: "Piazza Dante 1930",
+    gruppo: "Piazza Dante",
+    descrizione: "Punto predisposto per la modalità VR. Il percorso VR è indipendente e potrà essere sostituito con il video panoramico dedicato di Piazza Principe.",
+    stato: "VR predisposto",
+    ieri: ["video/piazza_dante_1.mp4"],
+    vr: {
+      src: "video/piazza_dante_1.mp4",
+      type: "video",
+      projection: "flatvr",
+      angle: 180,
+      verticalAngle: 120,
+      fov: 80,
+      yaw: 0,
+      pitch: 0,
+      minPitch: -40,
+      maxPitch: 40,
+      loop: true,
+      audio: true
+    }
+  },  {
+    id: "piazza-dante-2",
+    nome: "Piazza Dante 1890",
+    gruppo: "Piazza Dante",
+    descrizione: "Punto predisposto per la modalità VR. Il percorso VR è indipendente e potrà essere sostituito con il video panoramico dedicato di Piazza Principe.",
+    stato: "VR predisposto",
+    ieri: ["video/piazza_dante_2.mp4"],
+    vr: {
+      src: "video/piazza_dante_2.mp4",
+      type: "video",
+      projection: "flatvr",
+      angle: 180,
+      verticalAngle: 120,
+      fov: 80,
+      yaw: 0,
+      pitch: 0,
+      minPitch: -40,
+      maxPitch: 40,
+      loop: true,
+      audio: true
+    }
+  },  {
+    id: "piazza-dante-3",
+    nome: "Piazza Ponticello",
+    gruppo: "Piazza Dante",
+    descrizione: "Punto predisposto per la modalità VR. Il percorso VR è indipendente e potrà essere sostituito con il video panoramico dedicato di Piazza Principe.",
+    stato: "VR predisposto",
+    ieri: ["video/piazza_dante_3.mp4"],
+    vr: {
+      src: "video/piazza_dante_3.mp4",
+      type: "video",
+      projection: "flatvr",
+      angle: 180,
+      verticalAngle: 120,
+      fov: 80,
+      yaw: 0,
+      pitch: 0,
+      minPitch: -40,
+      maxPitch: 40,
+      loop: true,
+      audio: true
+    }
+  },
   {
     id: "via-xx-settembre",
     nome: "Via XX Settembre",
