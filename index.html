@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#07101f">
-  <title>Genova mApp — 360 Lab v0.1.7</title>
-  <link rel="stylesheet" href="css/style.css?v=0.1.10">
+  <title>Genova mApp — 360 Lab v0.1.8</title>
+  <link rel="stylesheet" href="css/style.css?v=0.1.11">
 </head>
 <body>
   <div class="app-shell">
@@ -20,6 +20,33 @@
 
     <main class="main-grid">
       <section class="catalog-panel">
+        <section id="quick-load-panel" class="quick-load-panel" aria-labelledby="quick-load-title">
+          <div class="quick-load-copy">
+            <div class="quick-load-kicker">TEST RAPIDO VR</div>
+            <h2 id="quick-load-title">Carica video esterno</h2>
+            <p>Trascina qui un video dal computer oppure selezionalo: verrà letto solo localmente e potrai provarlo subito nel viewer.</p>
+          </div>
+          <div id="quick-drop-zone" class="quick-drop-zone" tabindex="0" role="button" aria-label="Trascina un video qui oppure premi per selezionarlo dal computer">
+            <div class="quick-drop-icon" aria-hidden="true">＋</div>
+            <div class="quick-drop-text">
+              <strong>Trascina qui un video</strong>
+              <span>oppure fai clic per scegliere un file</span>
+            </div>
+            <button id="quick-pick-file" class="quick-pick-btn" type="button">Scegli video</button>
+            <input id="quick-local-file" type="file" accept="video/*" hidden>
+          </div>
+          <div id="quick-file-info" class="quick-file-info" hidden>
+            <div>
+              <strong id="quick-file-name">Video selezionato</strong>
+              <span id="quick-file-meta">File locale pronto per il test</span>
+            </div>
+            <div class="quick-file-actions">
+              <button id="quick-change-file" class="quick-secondary-btn" type="button">Cambia</button>
+              <button id="quick-open-vr" class="quick-vr-btn" type="button">▶ Apri nel TEST VR</button>
+            </div>
+          </div>
+        </section>
+
         <div class="panel-heading">
           <div>
             <h2>Punti di prova</h2>
@@ -37,7 +64,8 @@
       <aside class="info-panel">
         <h2>Come usarlo</h2>
         <ol>
-          <li>Metti i tuoi MP4 nella cartella <code>video/</code> oppure scegli un file locale dal popup.</li>
+          <li>Per una prova veloce trascina un MP4 in <strong>Carica video esterno</strong>, senza copiarlo nel progetto.</li>
+          <li>Oppure metti i tuoi MP4 nella cartella <code>video/</code> e apri uno dei punti configurati.</li>
           <li>Apri il punto e controlla il video “Ieri” originale.</li>
           <li>Premi <strong>VR</strong> per entrare nella scena immersiva configurata a 120°, 240° o 360°.</li>
           <li>Usa il pannello <strong>TEST</strong> per FOV, limiti e orientamento.</li>
@@ -193,8 +221,8 @@
     </section>
   </div>
 
-  <script src="js/punti.js?v=0.1.10"></script>
-  <script src="js/vr-viewer.js?v=0.1.10"></script>
-  <script src="js/app.js?v=0.1.10"></script>
+  <script src="js/punti.js?v=0.1.11"></script>
+  <script src="js/vr-viewer.js?v=0.1.11"></script>
+  <script src="js/app.js?v=0.1.11"></script>
 </body>
 </html>
