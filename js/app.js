@@ -182,5 +182,48 @@
   $("gyro-btn").addEventListener("click",async function(){if(!viewer)return;if(viewer.gyro){viewer.disableGyro();this.classList.remove("is-on");this.textContent="📱 Movimento";return;}try{await viewer.requestGyro();this.classList.add("is-on");this.textContent="📱 Attivo";}catch(e){alert("Movimento non attivato: "+e.message+". Su smartphone usa HTTPS (es. Netlify) e autorizza i sensori.");}});
   $("vr-fullscreen").addEventListener("click",function(){var el=$("vr-shell");if(document.fullscreenElement){document.exitFullscreen&&document.exitFullscreen();}else if(el.requestFullscreen){el.requestFullscreen().catch(function(){});}});
   document.addEventListener("keydown",function(e){if(e.key!=="Escape")return;if(!vrOverlay.hidden)closeVR();else if(!modal.hidden)closePoint();});
+
+  // PWA: mostra l'installazione solo quando il browser la rende disponibile.
+  (function initPwa(){
+    var installBtn=$("install-app"),deferredPrompt=null;
+    if(!installBtn)return;
+
+    function isStandalone(){
+      return window.matchMedia&&window.matchMedia("(display-mode: standalone)").matches;
+    }
+    function hideInstall(){installBtn.hidden=true;}
+
+    window.addEventListener("beforeinstallprompt",function(e){
+      e.preventDefault();
+      deferredPrompt=e;
+      if(!isStandalone())installBtn.hidden=false;
+    });
+
+    installBtn.addEventListener("click",async function(){
+      if(!deferredPrompt)return;
+      installBtn.disabled=true;
+      try{
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+      }catch(_){
+        // Il browser può annullare il prompt senza che sia un errore dell'app.
+      }
+      deferredPrompt=null;
+      installBtn.disabled=false;
+      hideInstall();
+    });
+
+    window.addEventListener("appinstalled",function(){deferredPrompt=null;hideInstall();});
+    if(isStandalone())hideInstall();
+
+    if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost"||location.hostname==="127.0.0.1")){
+      window.addEventListener("load",function(){
+        navigator.serviceWorker.register("service-worker.js").catch(function(err){
+          console.warn("360 Lab: service worker non registrato",err);
+        });
+      });
+    }
+  })();
+
   renderList("");
 })();

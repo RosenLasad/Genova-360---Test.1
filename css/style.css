@@ -22,3 +22,12 @@
 .quick-pick-btn,.quick-secondary-btn,.quick-vr-btn{border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-weight:800;cursor:pointer;white-space:nowrap}.quick-pick-btn,.quick-secondary-btn{background:#16243a;color:#e5edf7}.quick-vr-btn{border-color:rgba(56,189,248,.55);background:linear-gradient(135deg,rgba(14,165,233,.32),rgba(56,189,248,.15));color:#fff}.quick-pick-btn:hover,.quick-secondary-btn:hover,.quick-vr-btn:hover{border-color:rgba(125,211,252,.7)}
 .quick-file-info{margin-top:12px;border:1px solid rgba(52,211,153,.28);border-radius:13px;background:rgba(52,211,153,.06);padding:12px;display:flex;align-items:center;justify-content:space-between;gap:12px}.quick-file-info[hidden]{display:none!important}.quick-file-info>div:first-child{min-width:0;display:flex;flex-direction:column;gap:4px}.quick-file-info strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.quick-file-info span{color:var(--muted);font-size:.75rem}.quick-file-actions{display:flex;gap:7px;flex:0 0 auto}
 @media(max-width:620px){.quick-drop-zone{align-items:flex-start;flex-wrap:wrap}.quick-pick-btn{width:100%}.quick-file-info{align-items:stretch;flex-direction:column}.quick-file-actions{display:grid;grid-template-columns:auto 1fr}.quick-vr-btn{white-space:normal}}
+
+
+/* PWA installazione desktop - 360 Lab v0.1.9 */
+.topbar-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.install-app-btn{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(56,189,248,.48);border-radius:999px;background:linear-gradient(135deg,rgba(14,165,233,.22),rgba(56,189,248,.10));color:#eaf7ff;padding:8px 12px;font-size:.78rem;font-weight:900;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.05);transition:.16s ease}
+.install-app-btn:hover,.install-app-btn:focus-visible{border-color:#7dd3fc;background:rgba(14,165,233,.28);outline:none;transform:translateY(-1px)}
+.install-app-btn[hidden]{display:none!important}
+.install-app-btn span{font-size:1rem;line-height:1}
+@media(max-width:820px){.topbar-actions{justify-content:flex-start}.install-app-btn{font-size:.75rem}}
